@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">TusEventos</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">TuNombre</string>
+    <string name="nav_header_subtitle">tucorreo@gmail.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_noticias">Noticias</string>
+    <string name="menu_favoritos">Favoritos</string>
+    <string name="menu_recordatorios">Recordatorios</string>
+    <string name="username">Usuario</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="password_confirm">Confirmar Contraseña</string>
+    <string name="create_account">Crear Cuenta</string>
+    <string name="register">Registrarse</string>
+    <string name="already_have_account">¿Ya tienes una cuenta?</string>
+    <string name="login">Iniciar sesion</string>
+    <string name="welcome">"Bienvenido, "</string>
+    <string name="welcome_subtitle">Inicia sesion para continuar</string>
+    <string name="no_account">¿Todavia no tienes una cuenta?</string>
+    <string name="username_short">Su nombre de usuario es demasiado corto, debe tener mas de 4 caracteres</string>
+    <string name="email_invalid">El email introducido no es valido, vuelva a intentarlo</string>
+    <string name="password_different">Las contraseñas son diferentes entre si</string>
+    <string name="user_not_found">El usuario no se ha podido encontrar</string>
+    <string name="connection_error">Error de Conexion</string>
+    <string name="retry">Intentarlo de nuevo</string>
+</resources>
