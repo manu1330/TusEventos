@@ -1,5 +1,6 @@
 package com.example.tuseventos.requests;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.fragment.app.Fragment;
@@ -124,7 +125,7 @@ public class UserRequests {
         });
     }
 
-    public static void logout(Fragment fragment) {
+    public static void logout(Activity activity) {
         Call<String> call = RetrofitClient.getClient().create(UserService.class)
                 .logout(ApiUtils.getBasicAuth());
 
@@ -138,9 +139,9 @@ public class UserRequests {
 
                         if (json.getString(Tags.RESULT).contains(Tags.OK)) {
                             Preferences.setToken(null);
-                            invokeMethod("onLogoutSuccess", fragment);
+                            invokeMethod("onLogoutSuccess", activity);
                         } else {
-                            invokeMethodWithString("onLogoutFailed", fragment, json.getString(Tags.MESSAGE));
+                            invokeMethodWithString("onLogoutFailed", activity, json.getString(Tags.MESSAGE));
                         }
                     } else {
                         Log.e(TAG, "response.body is null");
@@ -152,7 +153,7 @@ public class UserRequests {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                ApiUtils.errorResponse(t, fragment.getActivity());
+                ApiUtils.errorResponse(t, activity);
             }
         });
     }

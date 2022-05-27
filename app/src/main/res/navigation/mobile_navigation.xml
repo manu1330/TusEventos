@@ -28,4 +28,5 @@
         android:name="com.example.tuseventos.ui.AjustesFragment"
         android:label="@string/menu_ajustes"
         tools:layout="@layout/fragment_ajustes" />
+
 </navigation>

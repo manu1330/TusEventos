@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.tuseventos.requests.UserRequests;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -37,12 +38,23 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_noticias, R.id.nav_favoritos, R.id.nav_recordatorios, R.id.nav_ajustes)
+                R.id.nav_noticias, R.id.nav_favoritos, R.id.nav_recordatorios, R.id.nav_ajustes, R.id.nav_logout)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId()==R.id.nav_logout){
+                UserRequests.logout(this);
+            }return true;
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         if (Preferences.getToken().equals("")) {
             // Si el usuario sale en el login, termina la app.
@@ -52,6 +64,14 @@ public class MainActivity extends AppCompatActivity {
                 loginActive = true;
                 startActivity(new Intent(this, LoginActivity.class));
             }
+        }
+    }
+
+    public void onLogoutSuccess(){
+        if (Preferences.getToken().equals("")) {
+            // Si el usuario sale en el login, termina la app.
+            loginActive = true;
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 

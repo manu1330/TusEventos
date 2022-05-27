@@ -115,13 +115,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@drawable/custom_main_button_rounded"
+            android:background="@drawable/custom_main_button_rounded"
             android:elevation="2dp"
             android:text="@string/register"
             android:textAllCaps="false"

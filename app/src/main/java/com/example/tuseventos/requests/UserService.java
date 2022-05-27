@@ -9,15 +9,15 @@ import retrofit2.http.POST;
 
 public interface UserService {
 
-    @POST("api/social/login/")
+    @POST("usuarios/login/")
     @FormUrlEncoded
     Call<String> login(@Field("data") JSONObject data);
 
-    @POST("api/social/logout/")
+    @POST("usuarios/logout/")
     @FormUrlEncoded
     Call<String> logout(@Field("data") JSONObject data);
 
-    @POST("api/social/register/")
+    @POST("usuarios/register/")
     @FormUrlEncoded
     Call<String> register(@Field("data") JSONObject data);
 
