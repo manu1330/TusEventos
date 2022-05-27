@@ -17,8 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tuseventos.databinding.ActivityMainBinding;
 
-
-
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -39,13 +37,16 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_noticias, R.id.nav_favoritos, R.id.nav_recordatorios)
+                R.id.nav_noticias, R.id.nav_favoritos, R.id.nav_recordatorios, R.id.nav_ajustes)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        if (Preferences.getToken() == null){
+            Preferences.setToken("");
+        }
         if (Preferences.getToken().equals("")) {
             // Si el usuario sale en el login, termina la app.
             if (loginActive) {
