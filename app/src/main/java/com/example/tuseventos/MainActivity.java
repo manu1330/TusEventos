@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        if (Preferences.getToken() == null){
-            Preferences.setToken("");
-        }
         if (Preferences.getToken().equals("")) {
             // Si el usuario sale en el login, termina la app.
             if (loginActive) {
