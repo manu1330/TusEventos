@@ -29,6 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
+        <activity android:name=".AbrirNoticiaActivity" />
         <activity android:name=".requests.ServerErrorActivity" />
     </application>
 

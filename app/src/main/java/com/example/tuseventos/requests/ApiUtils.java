@@ -45,6 +45,18 @@ public class ApiUtils {
         return data;
     }
 
+    public static JSONObject getBasicAuthWith(String key, int value){
+        JSONObject data = new JSONObject();
+        try {
+            data.put(Tags.TOKEN, Preferences.getToken());
+            data.put(Tags.USER_ID, Preferences.getID());
+            data.put(key, value);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
     public static JSONObject getLoginJSON(String username, String password) {
         JSONObject data = new JSONObject();
         try {

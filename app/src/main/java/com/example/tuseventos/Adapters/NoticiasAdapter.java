@@ -1,5 +1,6 @@
 package com.example.tuseventos.Adapters;
 
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tuseventos.AbrirNoticiaActivity;
 import com.example.tuseventos.R;
 import com.example.tuseventos.models.Articulos;
 
@@ -40,6 +42,11 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.Notici
         Articulos articulo = articulosList.get(position);
         holder.txtTitulo.setText(articulo.getTitle());
         holder.txtSubtitulo.setText(articulo.getSubtitle());
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(fragment.getContext(), AbrirNoticiaActivity.class);
+            intent.putExtra("articulo", articulo);
+            fragment.getActivity().startActivity(intent);
+        });
     }
 
     @Override

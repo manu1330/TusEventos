@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tuseventos.Adapters.NoticiasAdapter;
 import com.example.tuseventos.R;
 import com.example.tuseventos.models.Articulos;
+import com.example.tuseventos.requests.NoticiasRequests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +24,11 @@ public class NoticiasFragment extends Fragment {
     RecyclerView recyclerNoticias;
     NoticiasAdapter noticiasAdapter;
     List<Articulos> articulosList = new ArrayList<>();
+    int page=1;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        articulosList.add(new Articulos("Baile ceremonial", "baile ceremonial guapardo"));
-        articulosList.add(new Articulos("Canto Folclorico", "canto folclorico guapardo"));
-        articulosList.add(new Articulos("Torneo lolsito", "torneo lolsito guapardo"));
 
         View root = inflater.inflate(R.layout.fragment_noticias, container, false);
         recyclerNoticias = root.findViewById(R.id.recycler_noticias);
@@ -41,4 +39,18 @@ public class NoticiasFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        NoticiasRequests.get_articles(this, 1);
+        articulosList.clear();
+
+    }
+
+    public void onGetArticlesSuccess(List<Articulos> articulosList){
+        this.articulosList.addAll(articulosList);
+        noticiasAdapter.notifyDataSetChanged();
+        page++;
+    }
 }

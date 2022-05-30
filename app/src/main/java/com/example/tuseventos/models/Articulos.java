@@ -3,11 +3,13 @@ package com.example.tuseventos.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Articulos {
+public class Articulos implements Serializable {
+    String id;
     String title;
     String subtitle;
     String text;
@@ -15,13 +17,15 @@ public class Articulos {
     Date date;
     Float lat;
     Float lng;
-
-    public  Articulos(String title,String subtitle){
-        this.title = title;
-        this.subtitle = subtitle;
-    }
+    Boolean isFavorite;
+    Boolean isRemindme;
 
     public Articulos(JSONObject json) {
+        try {
+            id = json.getString("id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         try {
             title = json.getString("title");
         } catch (JSONException e) {
@@ -58,10 +62,25 @@ public class Articulos {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        try {
+            isFavorite = json.getBoolean("is_favorite");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            isRemindme = json.getBoolean("is_remindme");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
+        try {
+            json.put("id", id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         try {
             json.put("title", title);
         } catch (JSONException e) {
@@ -100,6 +119,10 @@ public class Articulos {
         }
         return json;
     }
+
+    public String getId() {return id;}
+
+    public void setId(String id) {this.id = id;}
 
     public String getTitle() {
         return title;
@@ -156,5 +179,13 @@ public class Articulos {
     public void setLng(Float lng) {
         this.lng = lng;
     }
+
+    public Boolean getFavorite() {return isFavorite;}
+
+    public void setFavorite(Boolean favorite) {isFavorite = favorite;}
+
+    public Boolean getRemindme() {return isRemindme;}
+
+    public void setRemindme(Boolean remindme) {isRemindme = remindme;}
 }
 

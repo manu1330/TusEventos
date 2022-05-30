@@ -23,7 +23,7 @@ public class UserRequests {
 
     private static final String TAG = "UserRequests";
 
-    private static void invokeMethod(String methodName, Object object) {
+    public static void invokeMethod(String methodName, Object object) {
         try {
             Method method = object.getClass().getMethod(methodName);
             method.invoke(object);
@@ -32,7 +32,7 @@ public class UserRequests {
         }
     }
 
-    private static void invokeMethodWithString(String methodName, Object object, String string) {
+    public static void invokeMethodWithString(String methodName, Object object, String string) {
         try {
             Method method = object.getClass().getMethod(methodName, String.class);
             method.invoke(object, string);
@@ -41,7 +41,7 @@ public class UserRequests {
         }
     }
 
-    private static void invokeMethodWithList(String methodName, Object object, List list) {
+    public static void invokeMethodWithList(String methodName, Object object, List list) {
         try {
             Method method = object.getClass().getMethod(methodName, List.class);
             method.invoke(object, list);
