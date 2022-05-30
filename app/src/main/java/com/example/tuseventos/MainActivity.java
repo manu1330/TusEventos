@@ -6,6 +6,10 @@ import android.view.View;
 import android.view.Menu;
 
 import com.example.tuseventos.requests.UserRequests;
+import com.example.tuseventos.ui.AjustesFragment;
+import com.example.tuseventos.ui.FavoritosFragment;
+import com.example.tuseventos.ui.NoticiasFragment;
+import com.example.tuseventos.ui.RecordatoriosFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
         navigationView.setNavigationItemSelectedListener(item -> {
             if (item.getItemId()==R.id.nav_logout){
                 UserRequests.logout(this);
