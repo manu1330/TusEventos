@@ -5,9 +5,11 @@ import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.tuseventos.DialogTipos;
 import com.example.tuseventos.Preferences;
 import com.example.tuseventos.Tags;
 import com.example.tuseventos.models.Articulos;
+import com.example.tuseventos.models.TipoArticulos;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,9 +25,10 @@ public class NoticiasRequests {
 
     private static final String TAG = "NoticiasRequests";
 
-    public static void get_articles(Fragment fragment, int page) {
+    public static void get_articles(Fragment fragment, int page, String type_id) {
+        System.out.println(type_id+" TIPOIDEEEE");
         Call<String> call = RetrofitClient.getClient().create(NoticiasService.class)
-                .get_articles(ApiUtils.getBasicAuthWith("page", page));
+                .get_articles(ApiUtils.getBasicAuthWith("page", page, "type_id", type_id));
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -181,6 +184,44 @@ public class NoticiasRequests {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 ApiUtils.errorResponse(t, activity);
+            }
+        });
+    }
+
+    public static void get_article_types(DialogTipos dialogTipos) {
+        Call<String> call = RetrofitClient.getClient().create(NoticiasService.class)
+                .get_article_types(ApiUtils.getBasicAuth());
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    if (response.body() != null) {
+                        Log.v(TAG, response.body());
+                        JSONObject json = new JSONObject(response.body());
+
+                        if (json.getString(Tags.RESULT).contains(Tags.OK)) {
+                            JSONArray jsonTiposArticulos = json.getJSONArray("article_types");
+                            ArrayList<TipoArticulos> tiposArticulosList = new ArrayList<>();
+                            for (int i = 0; i < jsonTiposArticulos.length(); i++) {
+                                JSONObject tipoArticuloJson = jsonTiposArticulos.getJSONObject(i);
+                                TipoArticulos tipoArticulo = new TipoArticulos(tipoArticuloJson);
+                                tiposArticulosList.add(tipoArticulo);
+                            }
+                            UserRequests.invokeMethodWithList("onGetTypeArticlesSuccess", dialogTipos, tiposArticulosList);
+                        } else {
+                            UserRequests.invokeMethodWithString("onGetTypeArticlesFailed", dialogTipos, json.getString(Tags.MESSAGE));
+                        }
+                    } else {
+                        Log.e(TAG, "response.body is null");
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ApiUtils.errorResponse(t, dialogTipos.getActivity());
             }
         });
     }

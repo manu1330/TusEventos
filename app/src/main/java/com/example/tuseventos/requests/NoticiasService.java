@@ -29,4 +29,8 @@ public interface NoticiasService {
     @FormUrlEncoded
     Call<String> remove_remindme_article(@Field("data") JSONObject data);
 
+    @POST("eventos/get_article_types/")
+    @FormUrlEncoded
+    Call<String> get_article_types(@Field("data") JSONObject data);
+
 }
