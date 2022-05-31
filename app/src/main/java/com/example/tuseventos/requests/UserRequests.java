@@ -157,4 +157,39 @@ public class UserRequests {
             }
         });
     }
+
+    public static void change_credentials(Fragment fragment, String email, String contrasena) {
+        Call<String> call = RetrofitClient.getClient().create(UserService.class)
+                .change_credentials(ApiUtils.getBasicAuthWith("email", email, "password", contrasena));
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    if (response.body() != null) {
+                        Log.v(TAG, response.body());
+                        JSONObject json = new JSONObject(response.body());
+
+                        if (json.getString(Tags.RESULT).contains(Tags.OK)) {
+                            if (json.getBoolean("password_changed")){
+                                logout(fragment.getActivity());
+                            }
+                            invokeMethod("onChangedCredentialsSuccess", fragment);
+                        } else {
+                            invokeMethodWithString("onChangedCredentialsFailed", fragment, json.getString(Tags.MESSAGE));
+                        }
+                    } else {
+                        Log.e(TAG, "response.body is null");
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ApiUtils.errorResponse(t, fragment.getActivity());
+            }
+        });
+    }
 }

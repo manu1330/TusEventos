@@ -21,4 +21,8 @@ public interface UserService {
     @FormUrlEncoded
     Call<String> register(@Field("data") JSONObject data);
 
+    @POST("/usuarios/change_credentials/")
+    @FormUrlEncoded
+    Call<String> change_credentials(@Field("data") JSONObject data);
+
 }
