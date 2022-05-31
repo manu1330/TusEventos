@@ -35,26 +35,7 @@ public class AjustesFragment extends Fragment {
             contrasena = etContrasena.getText().toString();
             repetirContrasena = etRepetirContrasena.getText().toString();
 
-            if (email.equals("")){
-                email = null;
-            }
-            if (!email.matches(Tags.EMAIL_REGEX)) {
-                Toast.makeText(getContext(), "El email no es correcto", Toast.LENGTH_SHORT).show();
-            } else {
-                if (!contrasena.equals(repetirContrasena)){
-                    contrasena = null;
-                    Toast.makeText(getContext(), "La contrasena debe ser igual en ambas partes", Toast.LENGTH_SHORT).show();
-                } else{
-                    if (contrasena.equals("")){
-                        contrasena = null;
-                    }
-                    if (email.equals("")){
-                        email = null;
-                    }
-
-                    UserRequests.change_credentials(this, email, contrasena);
-                }
-            }
+            comprobar(email, contrasena, repetirContrasena);
 
         });
 
@@ -66,4 +47,24 @@ public class AjustesFragment extends Fragment {
         Toast.makeText(getContext(), "Datos cambiados correctamente", Toast.LENGTH_LONG).show();
     }
 
+    private void comprobar(String email, String contrasena, String repetirContrasena) {
+        if (!email.isEmpty() && !email.matches(Tags.EMAIL_REGEX)) {
+            Toast.makeText(getContext(), "Email incorrecto", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!contrasena.equals(repetirContrasena)) {
+            Toast.makeText(getContext(), "Las contraseñas no coinciden", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (email.isEmpty()) {
+            email = null;
+        }
+        if (contrasena.isEmpty()) {
+            contrasena = null;
+        }
+
+        UserRequests.change_credentials(this, email, contrasena);
+    }
 }
