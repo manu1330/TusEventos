@@ -21,26 +21,25 @@
                 android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
                 android:text="Hora del Evento"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.09"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                app:layout_constraintTop_toBottomOf="@+id/txtDia" />
 
             <TextView
                 android:id="@+id/txtHora"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
                 android:text="TextView"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.11"
-                app:layout_constraintStart_toEndOf="@+id/textView15"
-                app:layout_constraintTop_toBottomOf="@+id/txtDia" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/txtDia"
+                app:layout_constraintTop_toTopOf="@+id/textView17" />
 
             <TextView
                 android:id="@+id/txtTituloNoticia"
@@ -69,71 +68,81 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtTituloNoticia" />
 
-            <Button
-                android:id="@+id/btFavoritos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:backgroundTint="@color/purple_200"
-                android:text="Favoritos"
+            <HorizontalScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.094"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtSubtituloNoticia" />
+                app:layout_constraintTop_toBottomOf="@+id/txtSubtituloNoticia">
 
-            <Button
-                android:id="@+id/btRecordados"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:backgroundTint="@color/purple_500"
-                android:text="Recordar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.531"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtSubtituloNoticia" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btMapa"
-                android:layout_width="110dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/teal_700"
-                android:text="Mapa"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtSubtituloNoticia" />
+                    <Button
+                        android:id="@+id/btFavoritos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_marginStart="24dp"
+                        android:backgroundTint="@color/purple_200"
+                        android:text="Favoritos" />
+
+                    <Button
+                        android:id="@+id/btRecordados"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:backgroundTint="@color/purple_500"
+                        android:text="Recordar" />
+
+                    <Button
+                        android:id="@+id/btMapa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:backgroundTint="@color/teal_700"
+                        android:text="Mapa" />
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="16dp"
                 android:text="Dia del Evento"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.087"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btRecordados" />
+                app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
             <TextView
                 android:id="@+id/txtDia"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:text="TextView"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="32dp"
+                android:text="dwijuoañhdnwlioaukjidhnklwñiadhjnwailoukdjwnjakliudjwaiklñodjwak.djlñwkaidjwliajdwakli.jdwailñjdwioajdioñlwajiodñljwaiodjwaioñdjowañljdwoiuajdiowajidwa"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.11"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/textView15"
-                app:layout_constraintTop_toBottomOf="@+id/btRecordados" />
+                app:layout_constraintTop_toTopOf="@+id/textView15" />
 
             <TextView
                 android:id="@+id/txtContenido"
-                android:layout_width="351dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="44dp"
+                android:layout_marginEnd="32dp"
                 android:text="TextView"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
