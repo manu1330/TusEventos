@@ -48,6 +48,10 @@ public class AjustesFragment extends Fragment {
     }
 
     private void comprobar(String email, String contrasena, String repetirContrasena) {
+        if (contrasena.isEmpty() && email.isEmpty() && repetirContrasena.isEmpty()){
+            Toast.makeText(getContext(), "Ningun dato se ha cambiado", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (!email.isEmpty() && !email.matches(Tags.EMAIL_REGEX)) {
             Toast.makeText(getContext(), "Email incorrecto", Toast.LENGTH_LONG).show();
             return;
