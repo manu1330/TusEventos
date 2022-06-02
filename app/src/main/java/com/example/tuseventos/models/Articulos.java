@@ -19,6 +19,7 @@ public class Articulos implements Serializable {
     Float lng;
     Boolean isFavorite;
     Boolean isRemindme;
+    TipoArticulos tipo;
 
     public Articulos(JSONObject json) {
         try {
@@ -69,6 +70,11 @@ public class Articulos implements Serializable {
         }
         try {
             isRemindme = json.getBoolean("is_remindme");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            tipo = new TipoArticulos(json.getJSONObject("tipo"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -187,5 +193,13 @@ public class Articulos implements Serializable {
     public Boolean getRemindme() {return isRemindme;}
 
     public void setRemindme(Boolean remindme) {isRemindme = remindme;}
+
+    public TipoArticulos getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoArticulos tipo) {
+        this.tipo = tipo;
+    }
 }
 

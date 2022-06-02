@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.example.tuseventos.models.ArticuloRemember;
+import com.example.tuseventos.models.ArticuloRememberDao;
 import com.example.tuseventos.models.Articulos;
 import com.example.tuseventos.requests.NoticiasRequests;
 
@@ -70,9 +72,13 @@ public class AbrirNoticiaActivity extends Activity {
         if (articuloMostrar.getRemindme()){
             btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.purple_500));
             btRecordados.setText("Quitar Recordar");
+            ArticuloRememberDao articuloRemDAO = TusEventos.getDatabase().articuloRememberDao();
+            articuloRemDAO.deleteById(Integer.parseInt(articuloMostrar.getId()));
         }else{
             btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.verde));
             btRecordados.setText("Recordar");
+            ArticuloRememberDao articuloRemDAO = TusEventos.getDatabase().articuloRememberDao();
+            ArticuloRemember articuloRem = new ArticuloRemember(articuloMostrar);
         }
         btRecordados.setOnClickListener(view -> {
             if (articuloMostrar.getRemindme()){

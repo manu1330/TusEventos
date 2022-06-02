@@ -1,14 +1,24 @@
 package com.example.tuseventos.models;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 
+@Entity
 public class TipoArticulos implements Serializable {
 
+    @PrimaryKey
     String id;
+
+    @ColumnInfo(name = "title")
     String name;
+
+    @ColumnInfo(name = "description")
     String description;
 
     public TipoArticulos(JSONObject json) {
