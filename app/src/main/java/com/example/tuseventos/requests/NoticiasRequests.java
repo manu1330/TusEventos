@@ -6,7 +6,6 @@ import android.util.Log;
 import androidx.fragment.app.Fragment;
 
 import com.example.tuseventos.DialogTipos;
-import com.example.tuseventos.Preferences;
 import com.example.tuseventos.Tags;
 import com.example.tuseventos.models.Articulos;
 import com.example.tuseventos.models.TipoArticulos;
@@ -207,6 +206,10 @@ public class NoticiasRequests {
                                 TipoArticulos tipoArticulo = new TipoArticulos(tipoArticuloJson);
                                 tiposArticulosList.add(tipoArticulo);
                             }
+
+                            // aprovechamos para guardar los tipos de articulos en la base de datos
+                            TipoArticulos.saveTiposArticulos(tiposArticulosList);
+
                             UserRequests.invokeMethodWithList("onGetTypeArticlesSuccess", dialogTipos, tiposArticulosList);
                         } else {
                             UserRequests.invokeMethodWithString("onGetTypeArticlesFailed", dialogTipos, json.getString(Tags.MESSAGE));

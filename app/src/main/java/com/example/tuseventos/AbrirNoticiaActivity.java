@@ -9,18 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.example.tuseventos.models.ArticuloRemember;
-import com.example.tuseventos.models.ArticuloRememberDao;
+import com.example.tuseventos.models.ArticuloRecordar;
+import com.example.tuseventos.models.ArticuloRecordarDao;
 import com.example.tuseventos.models.Articulos;
+import com.example.tuseventos.models.TipoArticulos;
 import com.example.tuseventos.requests.NoticiasRequests;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 public class AbrirNoticiaActivity extends Activity {
 
     Articulos articuloMostrar;
-    TextView txtTituloNoticia,txtSubtituloNoticia, txtDia, txtHora, txtContenido;
+    TextView txtTituloNoticia, txtSubtituloNoticia, txtDia, txtHora, txtContenido;
     Button btFavoritos, btRecordados, btMapa;
     ImageView imgNoticiaSeleccionada;
 
@@ -36,6 +37,9 @@ public class AbrirNoticiaActivity extends Activity {
         SimpleDateFormat simpleDateFormatHora = new SimpleDateFormat(patternHora);
 
         articuloMostrar = (Articulos) getIntent().getSerializableExtra("articulo");
+
+        // guardamos el tipo en la base de datos por si no estuviera guardado
+        TipoArticulos.saveTipoArticulo(articuloMostrar.getTipo());
 
         txtTituloNoticia = findViewById(R.id.txtTituloNoticia);
         txtSubtituloNoticia = findViewById(R.id.txtSubtituloNoticia);
@@ -54,63 +58,86 @@ public class AbrirNoticiaActivity extends Activity {
         txtContenido.setText(articuloMostrar.getText());
         Glide.with(this).load(articuloMostrar.getImage()).into(imgNoticiaSeleccionada);
 
-        if (articuloMostrar.getFavorite()){
+        if (articuloMostrar.getFavorite()) {
             btFavoritos.setBackgroundTintList(getResources().getColorStateList(R.color.red));
             btFavoritos.setText("Quitar Favoritos");
-        }else{
+        } else {
             btFavoritos.setBackgroundTintList(getResources().getColorStateList(R.color.purple_200));
             btFavoritos.setText("Favoritos");
         }
+
+        setReminderButton();
+
         btFavoritos.setOnClickListener(view -> {
-            if (articuloMostrar.getFavorite()){
+            if (articuloMostrar.getFavorite()) {
                 NoticiasRequests.remove_favorite_article(this, articuloMostrar.getId());
-            }else{
+            } else {
                 NoticiasRequests.add_favorite_article(this, articuloMostrar.getId());
             }
         });
 
-        if (articuloMostrar.getRemindme()){
-            btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.purple_500));
-            btRecordados.setText("Quitar Recordar");
-            ArticuloRememberDao articuloRemDAO = TusEventos.getDatabase().articuloRememberDao();
-            articuloRemDAO.deleteById(Integer.parseInt(articuloMostrar.getId()));
-        }else{
-            btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.verde));
-            btRecordados.setText("Recordar");
-            ArticuloRememberDao articuloRemDAO = TusEventos.getDatabase().articuloRememberDao();
-            ArticuloRemember articuloRem = new ArticuloRemember(articuloMostrar);
-        }
         btRecordados.setOnClickListener(view -> {
-            if (articuloMostrar.getRemindme()){
-                NoticiasRequests.remove_remindme_article(this, articuloMostrar.getId());
-            }else{
-                NoticiasRequests.add_remindme_article(this, articuloMostrar.getId());
+            if (articuloMostrar.getRemindme()) {
+                borrarArticulo(articuloMostrar);
+            } else {
+                insertarArticulo(articuloMostrar);
             }
         });
-
     }
 
-    public void onAddFavoriteArticleSuccess(){
+    public void onAddFavoriteArticleSuccess() {
         btFavoritos.setBackgroundTintList(getResources().getColorStateList(R.color.red));
         articuloMostrar.setFavorite(true);
         btFavoritos.setText("Quitar Favoritos");
     }
 
-    public void onRemoveFavoriteArticleSuccess(){
+    public void onRemoveFavoriteArticleSuccess() {
         btFavoritos.setBackgroundTintList(getResources().getColorStateList(R.color.purple_200));
         articuloMostrar.setFavorite(false);
         btFavoritos.setText("Favoritos");
     }
 
-    public void onAddRemindmeArticleSuccess(){
-        btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.purple_500));
-        articuloMostrar.setRemindme(true);
-        btRecordados.setText("Quitar Recordar");
+    private void insertarArticulo(Articulos articulo) {
+        new Thread(() -> {
+            ArticuloRecordarDao dao = TusEventos.getDatabase().articuloRememberDao();
+            dao.insert(new ArticuloRecordar(articulo));
+            runOnUiThread(() -> {
+                Snackbar.make(btRecordados, "El artículo se ha añadido a recordar", Snackbar.LENGTH_LONG).show();
+                btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.purple_500));
+                btRecordados.setText("Quitar Recordar");
+                setReminderButton();
+            });
+        }).start();
     }
 
-    public void onRemoveRemindmeArticleSuccess(){
-        btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.verde));
-        articuloMostrar.setRemindme(false);
-        btRecordados.setText("Recordar");
+    private void borrarArticulo(Articulos articulo) {
+        new Thread(() -> {
+            ArticuloRecordarDao dao = TusEventos.getDatabase().articuloRememberDao();
+            dao.deleteById(Integer.parseInt(articulo.getId()));
+            runOnUiThread(() -> {
+                Snackbar.make(btRecordados, "El artículo se ha eliminado de recordar", Snackbar.LENGTH_LONG).show();
+                btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.verde));
+                btRecordados.setText("Recordar");
+                setReminderButton();
+            });
+        }).start();
+    }
+
+    private void setReminderButton() {
+        new Thread(() -> {
+            ArticuloRecordarDao dao = TusEventos.getDatabase().articuloRememberDao();
+            ArticuloRecordar articuloRecordar = dao.getById(Integer.parseInt(articuloMostrar.getId()));
+            runOnUiThread(() -> {
+                if (articuloRecordar != null) {
+                    btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.purple_500));
+                    btRecordados.setText("Quitar Recordar");
+                    articuloMostrar.setRemindme(true);
+                } else {
+                    btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.verde));
+                    btRecordados.setText("Recordar");
+                    articuloMostrar.setRemindme(false);
+                }
+            });
+        }).start();
     }
 }

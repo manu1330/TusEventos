@@ -5,14 +5,14 @@ import android.app.AlertDialog;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tuseventos.Adapters.TiposAdapter;
-import com.example.tuseventos.models.Articulos;
 import com.example.tuseventos.models.TipoArticulos;
 import com.example.tuseventos.requests.NoticiasRequests;
-import com.example.tuseventos.ui.NoticiasFragment;
+import com.example.tuseventos.requests.UserRequests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +22,13 @@ public class DialogTipos {
     AlertDialog alertDialog;
     RecyclerView rvTipos;
     ProgressBar progressBar;
-    NoticiasFragment noticiasFragment;
+    Fragment fragment;
     TiposAdapter tiposAdapter;
     List<TipoArticulos> tipoArticulosList = new ArrayList<>();
 
-    public DialogTipos(NoticiasFragment noticiasFragment) {
-        this.noticiasFragment = noticiasFragment;
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(noticiasFragment.getContext());
+    public DialogTipos(Fragment fragment) {
+        this.fragment = fragment;
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(fragment.getContext());
         dialogBuilder.setView(R.layout.dialog_tipo);
         dialogBuilder.setTitle("Tipos");
         dialogBuilder.setNegativeButton("Cancelar", (dialogInterface, i) -> {
@@ -40,7 +40,7 @@ public class DialogTipos {
         rvTipos = alertDialog.findViewById(R.id.rvTipos);
         progressBar = alertDialog.findViewById(R.id.progressBar);
 
-        rvTipos.setLayoutManager(new LinearLayoutManager(noticiasFragment.getContext()));
+        rvTipos.setLayoutManager(new LinearLayoutManager(fragment.getContext()));
         tiposAdapter = new TiposAdapter(this, tipoArticulosList);
         rvTipos.setAdapter(tiposAdapter);
 
@@ -48,7 +48,7 @@ public class DialogTipos {
     }
 
     public void tipoSeleccionado(TipoArticulos tipoArticulos){
-        noticiasFragment.seleccionarTipo(tipoArticulos);
+        UserRequests.invokeMethodWithObject("seleccionarTipo", fragment, tipoArticulos);
         alertDialog.dismiss();
     }
 
@@ -57,7 +57,7 @@ public class DialogTipos {
     }
 
     public Activity getActivity(){
-        return  noticiasFragment.getActivity();
+        return  fragment.getActivity();
     }
 
     public void onGetTypeArticlesSuccess(List<TipoArticulos> tipoArticulosList){

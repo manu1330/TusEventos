@@ -21,6 +21,20 @@ public class Articulos implements Serializable {
     Boolean isRemindme;
     TipoArticulos tipo;
 
+    public Articulos(String id, String title, String subtitle, String text, String image, Date date, Float lat, Float lng, Boolean isFavorite, Boolean isRemindme, TipoArticulos tipo) {
+        this.id = id;
+        this.title = title;
+        this.subtitle = subtitle;
+        this.text = text;
+        this.image = image;
+        this.date = date;
+        this.lat = lat;
+        this.lng = lng;
+        this.isFavorite = isFavorite;
+        this.isRemindme = isRemindme;
+        this.tipo = tipo;
+    }
+
     public Articulos(JSONObject json) {
         try {
             id = json.getString("id");
@@ -74,7 +88,7 @@ public class Articulos implements Serializable {
             e.printStackTrace();
         }
         try {
-            tipo = new TipoArticulos(json.getJSONObject("tipo"));
+            tipo = new TipoArticulos(json.getJSONObject("article_type"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

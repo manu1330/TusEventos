@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.tuseventos.Preferences;
 import com.example.tuseventos.Tags;
+import com.example.tuseventos.models.TipoArticulos;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +50,15 @@ public class UserRequests {
             e.printStackTrace();
         }
     }
+
+
+    public static void invokeMethodWithObject(String methodName, Object object, Object parameter) {
+        try {
+            Method method = object.getClass().getMethod(methodName, List.class);
+            method.invoke(object, parameter);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }    }
 
     public static void register(
             Fragment fragment,
