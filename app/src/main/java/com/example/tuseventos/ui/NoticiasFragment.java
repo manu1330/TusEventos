@@ -27,7 +27,7 @@ public class NoticiasFragment extends Fragment {
     RecyclerView recyclerNoticias;
     NoticiasAdapter noticiasAdapter;
     List<Articulos> articulosList = new ArrayList<>();
-    int page=1;
+    int page = 1;
     TipoArticulos tipoSeleccionado;
     Button bt_filtro, bt_quitar_filtro;
 
@@ -60,7 +60,7 @@ public class NoticiasFragment extends Fragment {
         super.onResume();
 
         String idTipo = null;
-        if (tipoSeleccionado != null){
+        if (tipoSeleccionado != null) {
             idTipo = tipoSeleccionado.getId();
         }
         articulosList.clear();
@@ -68,17 +68,17 @@ public class NoticiasFragment extends Fragment {
 
     }
 
-    public void onGetArticlesSuccess(List<Articulos> articulosList){
+    public void onGetArticlesSuccess(List<Articulos> articulosList) {
         this.articulosList.addAll(articulosList);
         noticiasAdapter.notifyDataSetChanged();
         page++;
     }
 
-    public void seleccionarTipo(TipoArticulos tipoArticulos){
+    public void seleccionarTipo(TipoArticulos tipoArticulos) {
         tipoSeleccionado = tipoArticulos;
 
         String idTipo = null;
-        if (tipoSeleccionado != null){
+        if (tipoSeleccionado != null) {
             idTipo = tipoSeleccionado.getId();
         }
         articulosList.clear();
