@@ -25,6 +25,7 @@ public class NoticiasRequests {
     private static final String TAG = "NoticiasRequests";
 
     public static void get_articles(Fragment fragment, int page, String type_id) {
+        System.out.println(type_id+" TIPOIDEEEE");
         Call<String> call = RetrofitClient.getClient().create(NoticiasService.class)
                 .get_articles(ApiUtils.getBasicAuthWith("page", page, "type_id", type_id));
         call.enqueue(new Callback<String>() {
