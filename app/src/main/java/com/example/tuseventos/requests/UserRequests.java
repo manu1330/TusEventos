@@ -54,11 +54,12 @@ public class UserRequests {
 
     public static void invokeMethodWithObject(String methodName, Object object, Object parameter) {
         try {
-            Method method = object.getClass().getMethod(methodName, List.class);
+            Method method = object.getClass().getMethod(methodName, parameter.getClass());
             method.invoke(object, parameter);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
-        }    }
+        }
+    }
 
     public static void register(
             Fragment fragment,
@@ -181,7 +182,7 @@ public class UserRequests {
                         JSONObject json = new JSONObject(response.body());
 
                         if (json.getString(Tags.RESULT).contains(Tags.OK)) {
-                            if (json.getBoolean("password_changed")){
+                            if (json.getBoolean("password_changed")) {
                                 logout(fragment.getActivity());
                             }
                             invokeMethod("onChangedCredentialsSuccess", fragment);
