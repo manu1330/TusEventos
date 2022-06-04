@@ -90,7 +90,7 @@ public class AbrirNoticiaActivity extends Activity {
             }
         });
         
-        btFavoritos.setOnClickListener(view -> {
+        btMapa.setOnClickListener(view -> {
             String uri = String.format(Locale.ENGLISH, "geo:%f,%f", lat, lng);
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             startActivity(intent);
