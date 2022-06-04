@@ -1,6 +1,9 @@
 package com.example.tuseventos;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -111,6 +114,7 @@ public class AbrirNoticiaActivity extends Activity {
     }
 
     private void insertarArticulo(Articulos articulo) {
+        // Insertar en base de datos para recordar
         new Thread(() -> {
             ArticuloRecordarDao dao = TusEventos.getDatabase().articuloRememberDao();
             dao.insert(new ArticuloRecordar(articulo));
@@ -121,6 +125,17 @@ public class AbrirNoticiaActivity extends Activity {
                 setReminderButton();
             });
         }).start();
+
+        // Establecer alarma en la fecha y hora del evento
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("id", articulo.getId());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                100,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE);
+
+        manager.setExact(AlarmManager.RTC_WAKEUP, articulo.getDate().getTime(), pendingIntent);
     }
 
     private void borrarArticulo(Articulos articulo) {
@@ -134,6 +149,16 @@ public class AbrirNoticiaActivity extends Activity {
                 setReminderButton();
             });
         }).start();
+
+        // Eliminar alarma
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                100,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE);
+
+        manager.cancel(pendingIntent);
     }
 
     private void setReminderButton() {
