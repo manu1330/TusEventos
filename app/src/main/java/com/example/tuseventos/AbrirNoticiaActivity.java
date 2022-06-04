@@ -1,6 +1,8 @@
 package com.example.tuseventos;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import com.example.tuseventos.requests.NoticiasRequests;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class AbrirNoticiaActivity extends Activity {
 
@@ -24,6 +27,7 @@ public class AbrirNoticiaActivity extends Activity {
     TextView txtTituloNoticia, txtSubtituloNoticia, txtDia, txtHora, txtContenido;
     Button btFavoritos, btRecordados, btMapa;
     ImageView imgNoticiaSeleccionada;
+    float lat, lng;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +61,8 @@ public class AbrirNoticiaActivity extends Activity {
         txtHora.setText(simpleDateFormatHora.format(articuloMostrar.getDate()));
         txtContenido.setText(articuloMostrar.getText());
         Glide.with(this).load(articuloMostrar.getImage()).into(imgNoticiaSeleccionada);
+        lat = articuloMostrar.getLat();
+        lng = articuloMostrar.getLng();
 
         if (articuloMostrar.getFavorite()) {
             btFavoritos.setBackgroundTintList(getResources().getColorStateList(R.color.red));
@@ -83,6 +89,13 @@ public class AbrirNoticiaActivity extends Activity {
                 insertarArticulo(articuloMostrar);
             }
         });
+        
+        btFavoritos.setOnClickListener(view -> {
+            String uri = String.format(Locale.ENGLISH, "geo:%f,%f", lat, lng);
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            startActivity(intent);
+        });
+        
     }
 
     public void onAddFavoriteArticleSuccess() {
