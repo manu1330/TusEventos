@@ -60,7 +60,7 @@ public class AbrirNoticiaActivity extends Activity {
         txtDia.setText(simpleDateFormatDia.format(articuloMostrar.getDate()));
         txtHora.setText(simpleDateFormatHora.format(articuloMostrar.getDate()));
         txtContenido.setText(articuloMostrar.getText());
-        Glide.with(this).load(articuloMostrar.getImage()).into(imgNoticiaSeleccionada);
+        Glide.with(this).load(Tags.SERVER + articuloMostrar.getImage().substring(1)).centerCrop().into(imgNoticiaSeleccionada);
         lat = articuloMostrar.getLat();
         lng = articuloMostrar.getLng();
 

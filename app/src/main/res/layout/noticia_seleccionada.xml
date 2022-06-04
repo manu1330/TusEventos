@@ -43,28 +43,32 @@
 
             <TextView
                 android:id="@+id/txtTituloNoticia"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
                 android:text="TextView"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.688"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/imgNoticiaSeleccionada" />
 
             <TextView
                 android:id="@+id/txtSubtituloNoticia"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
                 android:text="TextView"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.67"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtTituloNoticia" />
 
@@ -75,6 +79,7 @@
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtSubtituloNoticia">
 
@@ -146,18 +151,15 @@
                 android:text="TextView"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.55"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtHora" />
 
             <ImageView
                 android:id="@+id/imgNoticiaSeleccionada"
-                android:layout_width="105dp"
-                android:layout_height="103dp"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="28dp"
-                app:layout_constraintEnd_toStartOf="@+id/txtTituloNoticia"
-                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_width="418dp"
+                android:layout_height="416dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />

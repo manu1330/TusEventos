@@ -42,6 +42,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.Notici
         Articulos articulo = articulosList.get(position);
         holder.txtTitulo.setText(articulo.getTitle());
         holder.txtSubtitulo.setText(articulo.getSubtitle());
+
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(fragment.getContext(), AbrirNoticiaActivity.class);
             intent.putExtra("articulo", articulo);
