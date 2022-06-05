@@ -97,13 +97,13 @@ public class AbrirNoticiaActivity extends Activity {
                 insertarArticulo(articuloMostrar);
             }
         });
-        
+
         btMapa.setOnClickListener(view -> {
             String uri = "geo:" + lat + "," + lng + "?q=" + lat + "," + lng;
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             startActivity(intent);
         });
-        
+
     }
 
     public void onAddFavoriteArticleSuccess() {
@@ -134,16 +134,16 @@ public class AbrirNoticiaActivity extends Activity {
                 });
             }).start();
 
-        // Establecer alarma en la fecha y hora del evento
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        intent.putExtra("titulo", articulo.getTitle());
-        intent.putExtra("id", articulo.getId());
-        intent.putExtra("imagen", articulo.getImage());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                100,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE);
+            // Establecer alarma en la fecha y hora del evento
+            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, AlarmReceiver.class);
+            intent.putExtra("titulo", articulo.getTitle());
+            intent.putExtra("id", articulo.getId());
+            intent.putExtra("imagen", articulo.getImage());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                    100,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE);
 
             System.out.println("poner alarma " + articulo.getDate());
             manager.setExact(AlarmManager.RTC_WAKEUP, articulo.getDate().getTime(), pendingIntent);
