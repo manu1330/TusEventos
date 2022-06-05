@@ -48,6 +48,7 @@ public class NoticiasFragment extends Fragment {
             dialogTipos.show();
         });
         bt_quitar_filtro.setOnClickListener(view -> {
+            tipoSeleccionado = null;
             articulosList.clear();
             NoticiasRequests.get_articles(this, 1, null);
         });

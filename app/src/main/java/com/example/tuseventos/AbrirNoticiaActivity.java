@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.tuseventos.models.ArticuloRecordar;
@@ -22,7 +23,6 @@ import com.example.tuseventos.requests.NoticiasRequests;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 public class AbrirNoticiaActivity extends Activity {
 
@@ -31,6 +31,7 @@ public class AbrirNoticiaActivity extends Activity {
     Button btFavoritos, btRecordados, btMapa;
     ImageView imgNoticiaSeleccionada;
     float lat, lng;
+    Toolbar toolbar2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class AbrirNoticiaActivity extends Activity {
         btRecordados = findViewById(R.id.btRecordados);
         btMapa = findViewById(R.id.btMapa);
         imgNoticiaSeleccionada = findViewById(R.id.imgNoticiaSeleccionada);
+        toolbar2 = findViewById(R.id.toolbar2);
 
         txtTituloNoticia.setText(articuloMostrar.getTitle());
         txtSubtituloNoticia.setText(articuloMostrar.getSubtitle());
@@ -66,6 +68,9 @@ public class AbrirNoticiaActivity extends Activity {
         Glide.with(this).load(Tags.SERVER + articuloMostrar.getImage().substring(1)).centerCrop().into(imgNoticiaSeleccionada);
         lat = articuloMostrar.getLat();
         lng = articuloMostrar.getLng();
+        toolbar2.setNavigationOnClickListener(view -> {
+            finish();
+        });
 
         if (articuloMostrar.getFavorite()) {
             btFavoritos.setBackgroundTintList(getResources().getColorStateList(R.color.red));
@@ -94,7 +99,7 @@ public class AbrirNoticiaActivity extends Activity {
         });
         
         btMapa.setOnClickListener(view -> {
-            String uri = String.format(Locale.ENGLISH, "geo:%f,%f", lat, lng);
+            String uri = "geo:" + lat + "," + lng + "?q=" + lat + "," + lng;
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             startActivity(intent);
         });
@@ -105,12 +110,14 @@ public class AbrirNoticiaActivity extends Activity {
         btFavoritos.setBackgroundTintList(getResources().getColorStateList(R.color.red));
         articuloMostrar.setFavorite(true);
         btFavoritos.setText("Quitar Favoritos");
+        Snackbar.make(btRecordados, "El artículo se ha añadido a favoritos", Snackbar.LENGTH_LONG).show();
     }
 
     public void onRemoveFavoriteArticleSuccess() {
         btFavoritos.setBackgroundTintList(getResources().getColorStateList(R.color.purple_200));
         articuloMostrar.setFavorite(false);
         btFavoritos.setText("Favoritos");
+        Snackbar.make(btRecordados, "El artículo se ha eliminado de favoritos", Snackbar.LENGTH_LONG).show();
     }
 
     private void insertarArticulo(Articulos articulo) {

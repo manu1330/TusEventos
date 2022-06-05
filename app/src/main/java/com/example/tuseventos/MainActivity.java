@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.example.tuseventos.requests.UserRequests;
 import com.example.tuseventos.ui.AjustesFragment;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private DrawerLayout drawer;
     NavController navController;
+    TextView txtNombre, txtCorreo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = navigationView.getHeaderView(0);
+
+        txtNombre = headerView.findViewById(R.id.txtNombre);
+        txtCorreo = headerView.findViewById(R.id.txtCorreo);
+
     }
 
     @Override
@@ -71,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 loginActive = true;
                 startActivity(new Intent(this, LoginActivity.class));
             }
+        }else{
+            txtNombre.setText(Preferences.getString("username"));
+            txtCorreo.setText(Preferences.getString("email"));
         }
     }
 

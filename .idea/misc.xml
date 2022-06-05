@@ -13,6 +13,7 @@
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/drawable/custom_edit_text_rounded_incorrect.xml" value="0.2985" />
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/drawable/custom_main_button_rounded.xml" value="0.2985" />
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/drawable/ic_menu_camera.xml" value="0.2985" />
+        <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/drawable/ic_toolbar_back.xml" value="0.1565" />
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/drawable/logo_periodico.xml" value="0.2985" />
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/layout/activity_login.xml" value="0.2875905797101449" />
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/layout/activity_main.xml" value="0.2875905797101449" />
@@ -23,6 +24,7 @@
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/layout/fragment_home.xml" value="0.2875905797101449" />
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/layout/fragment_login.xml" value="0.33" />
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/layout/fragment_noticias.xml" value="0.33" />
+        <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/layout/fragment_recordatorios.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/layout/fragment_register.xml" value="0.33" />
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/layout/nav_header_main.xml" value="0.2875905797101449" />
         <entry key="..\:/Users/rap5p/AndroidStudioProjects/TusEventos/app/src/main/res/layout/noticia_seleccionada.xml" value="0.25" />
