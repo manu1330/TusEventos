@@ -138,12 +138,10 @@ public class AbrirNoticiaActivity extends Activity {
             AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(this, AlarmReceiver.class);
             intent.putExtra("titulo", articulo.getTitle());
-            intent.putExtra("id", articulo.getId());
-            intent.putExtra("imagen", articulo.getImage());
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                     100,
                     intent,
-                    PendingIntent.FLAG_IMMUTABLE);
+                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
             System.out.println("poner alarma " + articulo.getDate());
             manager.setExact(AlarmManager.RTC_WAKEUP, articulo.getDate().getTime(), pendingIntent);
@@ -170,7 +168,7 @@ public class AbrirNoticiaActivity extends Activity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                 100,
                 intent,
-                PendingIntent.FLAG_IMMUTABLE);
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         System.out.println("cancelar alarma");
         manager.cancel(pendingIntent);
