@@ -12,6 +12,11 @@ import androidx.core.app.NotificationCompat;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        try {
+            System.out.println(intent.getStringExtra("llega"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.out.println("Alarme disparado");
         createNotificationChannel(context);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1");

@@ -114,28 +114,33 @@ public class AbrirNoticiaActivity extends Activity {
     }
 
     private void insertarArticulo(Articulos articulo) {
-        // Insertar en base de datos para recordar
-        new Thread(() -> {
-            ArticuloRecordarDao dao = TusEventos.getDatabase().articuloRememberDao();
-            dao.insert(new ArticuloRecordar(articulo));
-            runOnUiThread(() -> {
-                Snackbar.make(btRecordados, "El artículo se ha añadido a recordar", Snackbar.LENGTH_LONG).show();
-                btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.purple_500));
-                btRecordados.setText("Quitar Recordar");
-                setReminderButton();
-            });
-        }).start();
+        if (articulo.getDate().getTime() > System.currentTimeMillis()) {
+            // Insertar en base de datos para recordar
+            new Thread(() -> {
+                ArticuloRecordarDao dao = TusEventos.getDatabase().articuloRememberDao();
+                dao.insert(new ArticuloRecordar(articulo));
+                runOnUiThread(() -> {
+                    Snackbar.make(btRecordados, "El artículo se ha añadido a recordar", Snackbar.LENGTH_LONG).show();
+                    btRecordados.setBackgroundTintList(getResources().getColorStateList(R.color.purple_500));
+                    btRecordados.setText("Quitar Recordar");
+                    setReminderButton();
+                });
+            }).start();
 
-        // Establecer alarma en la fecha y hora del evento
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        intent.putExtra("id", articulo.getId());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                100,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE);
+            // Establecer alarma en la fecha y hora del evento
+            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, AlarmReceiver.class);
+            intent.putExtra("llega", "llega");
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                    100,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE);
 
-        manager.setExact(AlarmManager.RTC_WAKEUP, articulo.getDate().getTime(), pendingIntent);
+            System.out.println("poner alarma " + articulo.getDate());
+            manager.setExact(AlarmManager.RTC_WAKEUP, articulo.getDate().getTime(), pendingIntent);
+        } else {
+            Snackbar.make(btRecordados, "El evento ya ha pasado", Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void borrarArticulo(Articulos articulo) {
@@ -158,6 +163,7 @@ public class AbrirNoticiaActivity extends Activity {
                 intent,
                 PendingIntent.FLAG_IMMUTABLE);
 
+        System.out.println("cancelar alarma");
         manager.cancel(pendingIntent);
     }
 
