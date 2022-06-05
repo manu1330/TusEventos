@@ -33,4 +33,8 @@ public interface NoticiasService {
     @FormUrlEncoded
     Call<String> get_article_types(@Field("data") JSONObject data);
 
+    @POST("eventos/get_favorite_articles/")
+    @FormUrlEncoded
+    Call<String> get_favorite_articles(@Field("data") JSONObject data);
+
 }

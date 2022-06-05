@@ -9,15 +9,31 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
+import com.bumptech.glide.Glide;
+
+import java.util.concurrent.ExecutionException;
+
 public class AlarmReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        String titulo = intent.getStringExtra("titulo");
+        String id = intent.getStringExtra("id");
+        String imagen = intent.getStringExtra("imagen");
         System.out.println("Alarme disparado");
         createNotificationChannel(context);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1");
         builder.setSmallIcon(R.drawable.logo_periodico);
-        builder.setContentTitle("test");
-        builder.setContentText("test");
+        builder.setContentTitle(titulo);
+        builder.setContentText("Ha llegado la hora de su evento");
+        try {
+            builder.setLargeIcon(Glide.with(context).asBitmap().skipMemoryCache(true).load(imagen).into(150, 150).get());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

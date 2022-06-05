@@ -136,7 +136,9 @@ public class AbrirNoticiaActivity extends Activity {
         // Establecer alarma en la fecha y hora del evento
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("titulo", articulo.getTitle());
         intent.putExtra("id", articulo.getId());
+        intent.putExtra("imagen", articulo.getImage());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                 100,
                 intent,
