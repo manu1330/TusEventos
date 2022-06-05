@@ -61,18 +61,9 @@ public class UserRequests {
         }
     }
 
-    public static void register(
-            Fragment fragment,
-            String username,
-            String email,
-            String password
-    ) {
+    public static void register(Fragment fragment, String username, String email, String password) {
         Call<String> call = RetrofitClient.getClient().create(UserService.class)
-                .register(ApiUtils.getRegisterJSON(
-                        username,
-                        email,
-                        password
-                ));
+                .register(ApiUtils.getRegisterJSON(username, email, password));
 
         call.enqueue(new Callback<String>() {
             @Override
@@ -84,6 +75,8 @@ public class UserRequests {
 
                         if (json.getString(Tags.RESULT).contains(Tags.OK)) {
                             Preferences.setToken(json.getString(Tags.TOKEN));
+                            Preferences.setString("username", json.getString("username"));
+                            Preferences.setString("email", json.getString("email"));
                             invokeMethod("onRegisterSuccess", fragment);
                         } else {
                             invokeMethodWithString("onRegisterFailed", fragment, json.getString(Tags.MESSAGE));
@@ -117,6 +110,8 @@ public class UserRequests {
 
                         if (json.getString(Tags.RESULT).contains(Tags.OK)) {
                             Preferences.setToken(json.getString(Tags.TOKEN));
+                            Preferences.setString("username", json.getString("username"));
+                            Preferences.setString("email", json.getString("email"));
                             invokeMethod("onLoginSuccess", fragment);
                         } else {
                             invokeMethodWithString("onLoginFailed", fragment, json.getString(Tags.MESSAGE));

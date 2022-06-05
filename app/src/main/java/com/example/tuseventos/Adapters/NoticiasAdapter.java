@@ -12,8 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.tuseventos.AbrirNoticiaActivity;
 import com.example.tuseventos.R;
+import com.example.tuseventos.Tags;
 import com.example.tuseventos.models.Articulos;
 
 import java.util.ArrayList;
@@ -42,7 +44,8 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.Notici
         Articulos articulo = articulosList.get(position);
         holder.txtTitulo.setText(articulo.getTitle());
         holder.txtSubtitulo.setText(articulo.getSubtitle());
-
+        holder.imgNoticia.setVisibility(View.VISIBLE);
+        Glide.with(fragment.getContext()).load(Tags.SERVER + articulo.getImage().substring(1)).centerCrop().into(holder.imgNoticia);
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(fragment.getContext(), AbrirNoticiaActivity.class);
             intent.putExtra("articulo", articulo);
