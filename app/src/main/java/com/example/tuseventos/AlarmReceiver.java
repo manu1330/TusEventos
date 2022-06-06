@@ -1,7 +1,10 @@
 package com.example.tuseventos;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,28 +31,35 @@ public class AlarmReceiver extends BroadcastReceiver {
         String id = intent.getStringExtra("id");
         String imagen = intent.getStringExtra("imagen");
         System.out.println("Alarma");
-        createNotificationChannel(context);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1");
-        builder.setSmallIcon(R.drawable.logo_periodico);
-        builder.setContentTitle(titulo);
-        builder.setContentText("Ha llegado la hora de su evento");
-//        Glide.with(context)
-//                .asBitmap()
-//                .load(Tags.SERVER + imagen.substring(1))
-//                .into(new CustomTarget<Bitmap>() {
-//                    @Override
-//                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-//                        builder.setLargeIcon(resource);
-//                    }
-//
-//                    @Override
-//                    public void onLoadCleared(@Nullable Drawable placeholder) {
-//                    }
-//                });
-        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, builder.build());
+        // Intent para lanzar la actividad al pulsar la notificación
+        Intent notificationIntent = new Intent(context, AbrirNoticiaActivity.class);
+        notificationIntent.putExtra("id", id);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(notificationIntent);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(1001, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel(context);
+            Notification.Builder builder = new Notification.Builder(context, "1")
+                    .setContentTitle(titulo)
+                    .setContentText("Ha llegado la hora del evento")
+                    .setSmallIcon(R.drawable.logo_periodico)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true);
+            Notification notification = builder.build();
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.notify(1, notification);
+        } else {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1")
+                    .setContentTitle(titulo).setContentText("Ha llegado la hora del evento")
+                    .setSmallIcon(R.drawable.logo_periodico)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true);
+            Notification notification = builder.build();
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.notify(1, notification);
+        }
     }
 
     private void createNotificationChannel(Context context) {

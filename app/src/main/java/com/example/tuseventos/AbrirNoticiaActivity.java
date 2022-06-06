@@ -38,17 +38,6 @@ public class AbrirNoticiaActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.noticia_seleccionada);
 
-        String patternDia = "dd-MM-yy";
-        SimpleDateFormat simpleDateFormatDia = new SimpleDateFormat(patternDia);
-
-        String patternHora = "HH:mm";
-        SimpleDateFormat simpleDateFormatHora = new SimpleDateFormat(patternHora);
-
-        articuloMostrar = (Articulos) getIntent().getSerializableExtra("articulo");
-
-        // guardamos el tipo en la base de datos por si no estuviera guardado
-        TipoArticulos.saveTipoArticulo(articuloMostrar.getTipo());
-
         txtTituloNoticia = findViewById(R.id.txtTituloNoticia);
         txtSubtituloNoticia = findViewById(R.id.txtSubtituloNoticia);
         txtDia = findViewById(R.id.txtDia);
@@ -59,6 +48,26 @@ public class AbrirNoticiaActivity extends Activity {
         btMapa = findViewById(R.id.btMapa);
         imgNoticiaSeleccionada = findViewById(R.id.imgNoticiaSeleccionada);
         toolbar2 = findViewById(R.id.toolbar2);
+
+        if (getIntent().getSerializableExtra("articulo") != null) {
+            articuloMostrar = (Articulos) getIntent().getSerializableExtra("articulo");
+            // guardamos el tipo en la base de datos por si no estuviera guardado
+            TipoArticulos.saveTipoArticulo(articuloMostrar.getTipo());
+            inicializarVistas();
+        } else {
+            // aqui se entra desde una notificacion, no hay articulo
+            String id = getIntent().getStringExtra("id");
+            NoticiasRequests.get_article(this, id);
+        }
+    }
+
+    public void inicializarVistas() {
+
+        String patternDia = "dd-MM-yy";
+        SimpleDateFormat simpleDateFormatDia = new SimpleDateFormat(patternDia);
+
+        String patternHora = "HH:mm";
+        SimpleDateFormat simpleDateFormatHora = new SimpleDateFormat(patternHora);
 
         txtTituloNoticia.setText(articuloMostrar.getTitle());
         txtSubtituloNoticia.setText(articuloMostrar.getSubtitle());
@@ -103,7 +112,6 @@ public class AbrirNoticiaActivity extends Activity {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             startActivity(intent);
         });
-
     }
 
     public void onAddFavoriteArticleSuccess() {
@@ -118,6 +126,15 @@ public class AbrirNoticiaActivity extends Activity {
         articuloMostrar.setFavorite(false);
         btFavoritos.setText("Favoritos");
         Snackbar.make(btRecordados, "El artículo se ha eliminado de favoritos", Snackbar.LENGTH_LONG).show();
+    }
+
+    public void onGetArticleSuccess(Articulos articulo) {
+        articuloMostrar = articulo;
+        inicializarVistas();
+    }
+
+    public void onGetArticleFailed(String message) {
+        Snackbar.make(btRecordados, "Ha ocurrido un error al cargar el artículo.", Snackbar.LENGTH_LONG).show();
     }
 
     private void insertarArticulo(Articulos articulo) {
@@ -138,6 +155,8 @@ public class AbrirNoticiaActivity extends Activity {
             AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(this, AlarmReceiver.class);
             intent.putExtra("titulo", articulo.getTitle());
+            intent.putExtra("id", articulo.getId());
+            intent.putExtra("imagen", articulo.getImage());
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                     100,
                     intent,

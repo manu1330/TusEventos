@@ -266,4 +266,37 @@ public class NoticiasRequests {
         });
     }
 
+    public static void get_article(Activity activity, String id) {
+        Call<String> call = RetrofitClient.getClient().create(NoticiasService.class)
+                .get_article(ApiUtils.getBasicAuthWith("article_id", id));
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    if (response.body() != null) {
+                        Log.v(TAG, response.body());
+                        JSONObject json = new JSONObject(response.body());
+
+                        if (json.getString(Tags.RESULT).contains(Tags.OK)) {
+                            JSONObject jsonArticulo = json.getJSONObject("article");
+                            Articulos articulo = new Articulos(jsonArticulo);
+
+                            UserRequests.invokeMethodWithObject("onGetArticleSuccess", activity, articulo);
+                        } else {
+                            UserRequests.invokeMethodWithString("onGetArticleFailed", activity, json.getString(Tags.MESSAGE));
+                        }
+                    } else {
+                        Log.e(TAG, "response.body is null");
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ApiUtils.errorResponse(t, activity);
+            }
+        });
+    }
 }
