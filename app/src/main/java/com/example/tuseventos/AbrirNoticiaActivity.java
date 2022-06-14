@@ -42,6 +42,7 @@ public class AbrirNoticiaActivity extends Activity {
     Toolbar toolbar2;
     RecyclerView rvArticulosRecomendados;
     ProgressBar progressBar;
+    TextView tvNoRecommended;
 
     List<Articulos> recommendedArticulos = new ArrayList<>();
 
@@ -62,6 +63,7 @@ public class AbrirNoticiaActivity extends Activity {
         toolbar2 = findViewById(R.id.toolbar2);
         rvArticulosRecomendados = findViewById(R.id.rv_recommended_articles);
         progressBar = findViewById(R.id.progress_bar);
+        tvNoRecommended = findViewById(R.id.tv_no_recommended);
 
         if (getIntent().getSerializableExtra("articulo") != null) {
             articuloMostrar = (Articulos) getIntent().getSerializableExtra("articulo");
@@ -160,9 +162,20 @@ public class AbrirNoticiaActivity extends Activity {
 
     public void onGetRecommendedArticlesSuccess(List<Articulos> articulos) {
         recommendedArticulos.clear();
+        for (Articulos articulo : articulos) {
+            if (articulo.getId().equals(articuloMostrar.getId())) {
+                articulos.remove(articulo);
+                break;
+            }
+        }
         recommendedArticulos.addAll(articulos);
         rvArticulosRecomendados.getAdapter().notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
+        if (recommendedArticulos.size() == 0) {
+            tvNoRecommended.setVisibility(View.VISIBLE);
+        } else {
+            tvNoRecommended.setVisibility(View.GONE);
+        }
     }
 
     public void onGetRecommendedArticlesFailed(String message) {
