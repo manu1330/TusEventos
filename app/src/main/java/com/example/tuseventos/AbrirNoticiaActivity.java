@@ -7,14 +7,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.tuseventos.Adapters.RecommendedArticulosAdapter;
 import com.example.tuseventos.models.ArticuloRecordar;
 import com.example.tuseventos.models.ArticuloRecordarDao;
 import com.example.tuseventos.models.Articulos;
@@ -23,6 +29,8 @@ import com.example.tuseventos.requests.NoticiasRequests;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AbrirNoticiaActivity extends Activity {
 
@@ -32,6 +40,10 @@ public class AbrirNoticiaActivity extends Activity {
     ImageView imgNoticiaSeleccionada;
     float lat, lng;
     Toolbar toolbar2;
+    RecyclerView rvArticulosRecomendados;
+    ProgressBar progressBar;
+
+    List<Articulos> recommendedArticulos = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,17 +60,22 @@ public class AbrirNoticiaActivity extends Activity {
         btMapa = findViewById(R.id.btMapa);
         imgNoticiaSeleccionada = findViewById(R.id.imgNoticiaSeleccionada);
         toolbar2 = findViewById(R.id.toolbar2);
+        rvArticulosRecomendados = findViewById(R.id.rv_recommended_articles);
+        progressBar = findViewById(R.id.progress_bar);
 
         if (getIntent().getSerializableExtra("articulo") != null) {
             articuloMostrar = (Articulos) getIntent().getSerializableExtra("articulo");
             // guardamos el tipo en la base de datos por si no estuviera guardado
             TipoArticulos.saveTipoArticulo(articuloMostrar.getTipo());
             inicializarVistas();
+            NoticiasRequests.read_article(this, articuloMostrar.getId());
         } else {
             // aqui se entra desde una notificacion, no hay articulo
             String id = getIntent().getStringExtra("id");
             NoticiasRequests.get_article(this, id);
         }
+
+        NoticiasRequests.get_recommended_articles(this);
     }
 
     public void inicializarVistas() {
@@ -112,6 +129,10 @@ public class AbrirNoticiaActivity extends Activity {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             startActivity(intent);
         });
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvArticulosRecomendados.setLayoutManager(layoutManager);
+        rvArticulosRecomendados.setAdapter(new RecommendedArticulosAdapter(this, recommendedArticulos));
     }
 
     public void onAddFavoriteArticleSuccess() {
@@ -135,6 +156,18 @@ public class AbrirNoticiaActivity extends Activity {
 
     public void onGetArticleFailed(String message) {
         Snackbar.make(btRecordados, "Ha ocurrido un error al cargar el artículo.", Snackbar.LENGTH_LONG).show();
+    }
+
+    public void onGetRecommendedArticlesSuccess(List<Articulos> articulos) {
+        recommendedArticulos.clear();
+        recommendedArticulos.addAll(articulos);
+        rvArticulosRecomendados.getAdapter().notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
+    }
+
+    public void onGetRecommendedArticlesFailed(String message) {
+        progressBar.setVisibility(View.GONE);
+        Snackbar.make(btRecordados, "Ha ocurrido un error al cargar los artículos recomendados.", Snackbar.LENGTH_LONG).show();
     }
 
     private void insertarArticulo(Articulos articulo) {

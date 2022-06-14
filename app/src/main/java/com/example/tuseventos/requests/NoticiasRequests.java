@@ -299,4 +299,73 @@ public class NoticiasRequests {
             }
         });
     }
+
+    public static void read_article(Activity activity, String id) {
+        Call<String> call = RetrofitClient.getClient().create(NoticiasService.class)
+                .read_article(ApiUtils.getBasicAuthWith("article_id", id));
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    if (response.body() != null) {
+                        Log.v(TAG, response.body());
+                        JSONObject json = new JSONObject(response.body());
+
+                        if (json.getString(Tags.RESULT).contains(Tags.OK)) {
+                            UserRequests.invokeMethod("onReadArticleSuccess", activity);
+                        } else {
+                            UserRequests.invokeMethodWithString("onReadArticleFailed", activity, json.getString(Tags.MESSAGE));
+                        }
+                    } else {
+                        Log.e(TAG, "response.body is null");
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ApiUtils.errorResponse(t, activity);
+            }
+        });
+    }
+
+    public static void get_recommended_articles(Activity activity) {
+        Call<String> call = RetrofitClient.getClient().create(NoticiasService.class)
+                .get_recommended_articles(ApiUtils.getBasicAuth());
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    if (response.body() != null) {
+                        Log.v(TAG, response.body());
+                        JSONObject json = new JSONObject(response.body());
+
+                        if (json.getString(Tags.RESULT).contains(Tags.OK)) {
+                            JSONArray jsonArticulos = json.getJSONArray("articles");
+                            ArrayList<Articulos> articulosList = new ArrayList<>();
+                            for (int i = 0; i < jsonArticulos.length(); i++) {
+                                JSONObject articuloJson = jsonArticulos.getJSONObject(i);
+                                Articulos articulo = new Articulos(articuloJson);
+                                articulosList.add(articulo);
+                            }
+                            UserRequests.invokeMethodWithList("onGetRecommendedArticlesSuccess", activity, articulosList);
+                        } else {
+                            UserRequests.invokeMethodWithString("onGetRecommendedArticlesFailed", activity, json.getString(Tags.MESSAGE));
+                        }
+                    } else {
+                        Log.e(TAG, "response.body is null");
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ApiUtils.errorResponse(t, activity);
+            }
+        });
+    }
 }

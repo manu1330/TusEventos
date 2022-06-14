@@ -40,4 +40,12 @@ public interface NoticiasService {
     @POST("eventos/get_article/")
     @FormUrlEncoded
     Call<String> get_article(@Field("data") JSONObject data);
+
+    @POST("eventos/read_article/")
+    @FormUrlEncoded
+    Call<String> read_article(@Field("data") JSONObject data);
+
+    @POST("eventos/get_recommended_articles/")
+    @FormUrlEncoded
+    Call<String> get_recommended_articles(@Field("data") JSONObject data);
 }
