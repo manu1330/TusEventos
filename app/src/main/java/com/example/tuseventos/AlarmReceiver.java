@@ -29,7 +29,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         String titulo = intent.getStringExtra("titulo");
         String id = intent.getStringExtra("id");
-        String imagen = intent.getStringExtra("imagen");
         System.out.println("Alarma");
 
         // Intent para lanzar la actividad al pulsar la notificación

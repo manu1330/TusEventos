@@ -67,12 +67,10 @@ public class AbrirNoticiaActivity extends Activity {
 
         if (getIntent().getSerializableExtra("articulo") != null) {
             articuloMostrar = (Articulos) getIntent().getSerializableExtra("articulo");
-            // guardamos el tipo en la base de datos por si no estuviera guardado
             TipoArticulos.saveTipoArticulo(articuloMostrar.getTipo());
             inicializarVistas();
             NoticiasRequests.read_article(this, articuloMostrar.getId());
         } else {
-            // aqui se entra desde una notificacion, no hay articulo
             String id = getIntent().getStringExtra("id");
             NoticiasRequests.get_article(this, id);
         }
@@ -185,7 +183,6 @@ public class AbrirNoticiaActivity extends Activity {
 
     private void insertarArticulo(Articulos articulo) {
         if (articulo.getDate().getTime() > System.currentTimeMillis()) {
-            // Insertar en base de datos para recordar
             new Thread(() -> {
                 ArticuloRecordarDao dao = TusEventos.getDatabase().articuloRememberDao();
                 dao.insert(new ArticuloRecordar(articulo));
@@ -197,12 +194,10 @@ public class AbrirNoticiaActivity extends Activity {
                 });
             }).start();
 
-            // Establecer alarma en la fecha y hora del evento
             AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(this, AlarmReceiver.class);
             intent.putExtra("titulo", articulo.getTitle());
             intent.putExtra("id", articulo.getId());
-            intent.putExtra("imagen", articulo.getImage());
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                     100,
                     intent,
@@ -227,7 +222,6 @@ public class AbrirNoticiaActivity extends Activity {
             });
         }).start();
 
-        // Eliminar alarma
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
