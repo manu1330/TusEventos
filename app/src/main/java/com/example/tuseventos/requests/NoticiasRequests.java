@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import com.example.tuseventos.DialogTipos;
 import com.example.tuseventos.Tags;
 import com.example.tuseventos.models.Articulos;
+import com.example.tuseventos.models.Comentarios;
 import com.example.tuseventos.models.TipoArticulos;
 
 import org.json.JSONArray;
@@ -384,6 +385,44 @@ public class NoticiasRequests {
                             UserRequests.invokeMethod("onSentCommentSuccess", activity);
                         } else {
                             UserRequests.invokeMethodWithString("onSentCommentFailed", activity, json.getString(Tags.MESSAGE));
+                        }
+                    } else {
+                        Log.e(TAG, "response.body is null");
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ApiUtils.errorResponse(t, activity);
+            }
+        });
+    }
+
+    public static void get_comments_article(Activity activity, String id) {
+        Call<String> call = RetrofitClient.getClient().create(NoticiasService.class)
+                .get_comments_article(ApiUtils.getBasicAuthWith("article_id", id));
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    if (response.body() != null) {
+                        Log.v(TAG, response.body());
+                        JSONObject json = new JSONObject(response.body());
+
+                        if (json.getString(Tags.RESULT).contains(Tags.OK)) {
+                            JSONArray jsonComentarios = json.getJSONArray("comments");
+                            ArrayList<Comentarios> comentariosList = new ArrayList<>();
+                            for (int i = 0; i < jsonComentarios.length(); i++) {
+                                JSONObject comentarioJson = jsonComentarios.getJSONObject(i);
+                                Comentarios comentario = new Comentarios(comentarioJson);
+                                comentariosList.add(comentario);
+                            }
+                            UserRequests.invokeMethodWithList("onGetCommentsSuccess", activity, comentariosList);
+                        } else {
+                            UserRequests.invokeMethodWithString("onGetCommentsFailed", activity, json.getString(Tags.MESSAGE));
                         }
                     } else {
                         Log.e(TAG, "response.body is null");

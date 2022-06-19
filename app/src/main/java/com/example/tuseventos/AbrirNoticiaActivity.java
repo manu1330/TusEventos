@@ -204,6 +204,7 @@ public class AbrirNoticiaActivity extends Activity {
     }
 
     public void onSentCommentSuccess() {
+        NoticiasRequests.get_comments_article(this, articuloMostrar.getId());
         Snackbar.make(btRecordados, "El comentario se ha enviado correctamente", Snackbar.LENGTH_LONG).show();
     }
 
