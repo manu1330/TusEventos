@@ -47,8 +47,8 @@ public class ComentariosAdapter extends RecyclerView.Adapter<ComentariosAdapter.
         holder.txtUsername.setText(comentario.getUser());
         holder.txtComentario.setText(comentario.getText());
         holder.txtFecha.setText(simpleDateFormatDia.format(comentario.getDate()));
-        if (comentario.getImageUser() != null){
-            Glide.with(activity).load(Tags.SERVER + comentario.getImageUser().substring(1)).centerCrop().into(holder.imgUser);
+        if (comentario.getUser_image() != null){
+            Glide.with(activity).load(Tags.SERVER + comentario.getUser_image().substring(1)).centerCrop().circleCrop().into(holder.imgUser);
         }
     }
 

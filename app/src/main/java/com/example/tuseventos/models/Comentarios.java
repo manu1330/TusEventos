@@ -11,14 +11,14 @@ import java.util.Date;
 public class Comentarios implements Serializable {
     String id;
     String user;
-    String imageUser;
+    String user_image;
     String text;
     Date date;
 
-    public Comentarios(String id, String user, String imageUser, String text, Date date) {
+    public Comentarios(String id, String user, String user_image, String text, Date date) {
         this.id = id;
         this.user = user;
-        this.imageUser = imageUser;
+        this.user_image = user_image;
         this.text = text;
         this.date = date;
     }
@@ -35,7 +35,7 @@ public class Comentarios implements Serializable {
             e.printStackTrace();
         }
         try {
-            imageUser = json.getString("imageUser");
+            user_image = json.getString("user_image");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,9 +60,9 @@ public class Comentarios implements Serializable {
 
     public void setUser(String user) {this.user = user;}
 
-    public String getImageUser() {return imageUser;}
+    public String getUser_image() {return user_image;}
 
-    public void setImageUser(String imageUser) {this.imageUser = imageUser;}
+    public void setUser_image(String user_image) {this.user_image = user_image;}
 
     public String getText() {return text;}
 

@@ -27,6 +27,7 @@ import com.example.tuseventos.Adapters.RecommendedArticulosAdapter;
 import com.example.tuseventos.models.ArticuloRecordar;
 import com.example.tuseventos.models.ArticuloRecordarDao;
 import com.example.tuseventos.models.Articulos;
+import com.example.tuseventos.models.Comentarios;
 import com.example.tuseventos.models.TipoArticulos;
 import com.example.tuseventos.requests.NoticiasRequests;
 import com.google.android.material.snackbar.Snackbar;
@@ -47,6 +48,7 @@ public class AbrirNoticiaActivity extends Activity {
     RecyclerView rvArticulosRecomendados, rvGaleriaImg, rvComentarios;
     ProgressBar progressBar;
     TextView tvNoRecommended;
+    ComentariosAdapter comentariosAdapter;
 
     List<Articulos> recommendedArticulos = new ArrayList<>();
 
@@ -154,7 +156,9 @@ public class AbrirNoticiaActivity extends Activity {
 
         LinearLayoutManager layoutManagerComment = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvComentarios.setLayoutManager(layoutManagerComment);
-        rvComentarios.setAdapter(new ComentariosAdapter(this, articuloMostrar.getComentarios()));
+        comentariosAdapter = new ComentariosAdapter(this, articuloMostrar.getComentarios());
+        rvComentarios.setAdapter(comentariosAdapter);
+
     }
 
     public void onAddFavoriteArticleSuccess() {
@@ -201,6 +205,12 @@ public class AbrirNoticiaActivity extends Activity {
     public void onGetRecommendedArticlesFailed(String message) {
         progressBar.setVisibility(View.GONE);
         Snackbar.make(btRecordados, "Ha ocurrido un error al cargar los artículos recomendados.", Snackbar.LENGTH_LONG).show();
+    }
+
+    public void onGetCommentsSuccess(List<Comentarios> comentariosList) {
+        articuloMostrar.getComentarios().clear();
+        articuloMostrar.getComentarios().addAll(comentariosList);
+        comentariosAdapter.notifyDataSetChanged();
     }
 
     public void onSentCommentSuccess() {
