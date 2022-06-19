@@ -48,4 +48,8 @@ public interface NoticiasService {
     @POST("eventos/get_recommended_articles/")
     @FormUrlEncoded
     Call<String> get_recommended_articles(@Field("data") JSONObject data);
+
+    @POST("eventos/send_article_comment/")
+    @FormUrlEncoded
+    Call<String> send_article_comment(@Field("data") JSONObject data);
 }
