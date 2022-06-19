@@ -1,12 +1,15 @@
 package com.example.tuseventos.models;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Articulos implements Serializable {
     String id;
@@ -20,6 +23,8 @@ public class Articulos implements Serializable {
     Boolean isFavorite;
     Boolean isRemindme;
     TipoArticulos tipo;
+    List<String> imagenes;
+    List<Comentarios> comentarios;
 
     public Articulos(String id, String title, String subtitle, String text, String image, Date date, Float lat, Float lng, Boolean isFavorite, Boolean isRemindme, TipoArticulos tipo) {
         this.id = id;
@@ -89,6 +94,24 @@ public class Articulos implements Serializable {
         }
         try {
             tipo = new TipoArticulos(json.getJSONObject("article_type"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            imagenes = new ArrayList<>();
+            JSONArray arrayImg = json.getJSONArray("gallery_images");
+            for (int i = 0; i < arrayImg.length(); i++) {
+                imagenes.add(arrayImg.getString(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            comentarios = new ArrayList<>();
+            JSONArray arraycmt = json.getJSONArray("comments");
+            for (int i = 0; i < arraycmt.length(); i++) {
+                comentarios.add(new Comentarios(arraycmt.getJSONObject(i)));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -215,5 +238,13 @@ public class Articulos implements Serializable {
     public void setTipo(TipoArticulos tipo) {
         this.tipo = tipo;
     }
+
+    public List<String> getImagenes() {return imagenes;}
+
+    public void setImagenes(List<String> imagenes) {this.imagenes = imagenes;}
+
+    public List<Comentarios> getComentarios() {return comentarios;}
+
+    public void setComentarios(List<Comentarios> comentarios) {this.comentarios = comentarios;}
 }
 

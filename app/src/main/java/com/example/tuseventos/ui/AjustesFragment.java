@@ -22,7 +22,7 @@ public class AjustesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_ajustes, container, false);
-        etEmail = root.findViewById(R.id.etEmail);
+        etEmail = root.findViewById(R.id.etEscribirComentario);
         etContrasena = root.findViewById(R.id.etContraseña);
         etRepetirContrasena = root.findViewById(R.id.etRepetirContraseña);
         btRealizarCambios = root.findViewById(R.id.btRealizarCambios);

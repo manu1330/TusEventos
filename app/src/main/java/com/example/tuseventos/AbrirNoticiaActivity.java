@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.tuseventos.Adapters.ComentariosAdapter;
+import com.example.tuseventos.Adapters.GaleriaImgAdapter;
 import com.example.tuseventos.Adapters.RecommendedArticulosAdapter;
 import com.example.tuseventos.models.ArticuloRecordar;
 import com.example.tuseventos.models.ArticuloRecordarDao;
@@ -40,7 +42,7 @@ public class AbrirNoticiaActivity extends Activity {
     ImageView imgNoticiaSeleccionada;
     float lat, lng;
     Toolbar toolbar2;
-    RecyclerView rvArticulosRecomendados;
+    RecyclerView rvArticulosRecomendados, rvGaleriaImg, rvComentarios;
     ProgressBar progressBar;
     TextView tvNoRecommended;
 
@@ -62,6 +64,8 @@ public class AbrirNoticiaActivity extends Activity {
         imgNoticiaSeleccionada = findViewById(R.id.imgNoticiaSeleccionada);
         toolbar2 = findViewById(R.id.toolbar2);
         rvArticulosRecomendados = findViewById(R.id.rv_recommended_articles);
+        rvGaleriaImg = findViewById(R.id.rvGaleriaImg);
+        rvComentarios = findViewById(R.id.rvComentarios);
         progressBar = findViewById(R.id.progress_bar);
         tvNoRecommended = findViewById(R.id.tv_no_recommended);
 
@@ -133,6 +137,14 @@ public class AbrirNoticiaActivity extends Activity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvArticulosRecomendados.setLayoutManager(layoutManager);
         rvArticulosRecomendados.setAdapter(new RecommendedArticulosAdapter(this, recommendedArticulos));
+
+        LinearLayoutManager layoutManagerImg = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvGaleriaImg.setLayoutManager(layoutManagerImg);
+        rvGaleriaImg.setAdapter(new GaleriaImgAdapter(this, articuloMostrar.getImagenes()));
+
+        LinearLayoutManager layoutManagerComment = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvComentarios.setLayoutManager(layoutManagerComment);
+        rvComentarios.setAdapter(new ComentariosAdapter(this, articuloMostrar.getComentarios()));
     }
 
     public void onAddFavoriteArticleSuccess() {

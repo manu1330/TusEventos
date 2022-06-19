@@ -23,8 +23,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -159,13 +161,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 android:text="TextView"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtHora" />
+                app:layout_constraintTop_toBottomOf="@+id/rvGaleriaImg" />
 
             <ImageView
                 android:id="@+id/imgNoticiaSeleccionada"
@@ -181,13 +184,13 @@
                 android:id="@+id/tv_tepuedeinteresar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:text="Te puede interesar..."
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/textView17"
-                app:layout_constraintTop_toBottomOf="@+id/txtContenido" />
+                app:layout_constraintTop_toBottomOf="@+id/rvComentarios" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recommended_articles"
@@ -230,6 +233,52 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_tepuedeinteresar"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvGaleriaImg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtHora">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvComentarios"
+                android:layout_width="410dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="6dp"
+                app:layout_constraintEnd_toStartOf="@+id/txtContenido"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btEnviarComentario" />
+
+            <Button
+                android:id="@+id/btEnviarComentario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Enviar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtContenido" />
+
+            <EditText
+                android:id="@+id/etEscribirComentario"
+                android:layout_width="277dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:hint="Escribe un comentario"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/btEnviarComentario"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtContenido" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
