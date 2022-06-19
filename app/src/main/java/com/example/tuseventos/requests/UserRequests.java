@@ -12,10 +12,14 @@ import com.example.tuseventos.models.TipoArticulos;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -183,6 +187,76 @@ public class UserRequests {
                             invokeMethod("onChangedCredentialsSuccess", fragment);
                         } else {
                             invokeMethodWithString("onChangedCredentialsFailed", fragment, json.getString(Tags.MESSAGE));
+                        }
+                    } else {
+                        Log.e(TAG, "response.body is null");
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ApiUtils.errorResponse(t, fragment.getActivity());
+            }
+        });
+    }
+
+    public static void change_profile_picture(Fragment fragment, File image) {
+        JSONObject json = ApiUtils.getBasicAuth();
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), image);
+        MultipartBody.Part dataPart = MultipartBody.Part.createFormData("data", json.toString());
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", image.getName(), requestFile);
+
+        Call<String> call = RetrofitClient.getClient().create(UserService.class)
+                .change_profile_picture(dataPart, imagePart);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    if (response.body() != null) {
+                        Log.v(TAG, response.body());
+                        JSONObject json = new JSONObject(response.body());
+
+                        if (json.getString(Tags.RESULT).contains(Tags.OK)) {
+                            invokeMethodWithString("onChangeProfilePictureSuccess", fragment, json.getString("image"));
+                        } else {
+                            invokeMethodWithString("onChangeProfilePictureSuccess", fragment, json.getString(Tags.MESSAGE));
+                        }
+                    } else {
+                        Log.e(TAG, "response.body is null");
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ApiUtils.errorResponse(t, fragment.getActivity());
+            }
+        });
+    }
+
+    public static void get_self_profile_picture(Fragment fragment) {
+        Call<String> call = RetrofitClient.getClient().create(UserService.class)
+                .get_self_profile_picture(ApiUtils.getBasicAuth());
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    if (response.body() != null) {
+                        Log.v(TAG, response.body());
+                        JSONObject json = new JSONObject(response.body());
+
+                        if (json.getString(Tags.RESULT).contains(Tags.OK)) {
+                            invokeMethodWithString("onGetSelfProfilePictureSuccess", fragment, json.getString("image"));
+                        } else {
+                            invokeMethodWithString("onGetSelfProfilePictureFailed", fragment, json.getString(Tags.MESSAGE));
                         }
                     } else {
                         Log.e(TAG, "response.body is null");
