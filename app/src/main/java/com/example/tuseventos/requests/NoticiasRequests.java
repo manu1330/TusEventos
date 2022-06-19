@@ -368,4 +368,35 @@ public class NoticiasRequests {
             }
         });
     }
+
+    public static void send_article_comment(Activity activity, String id, String text) {
+        Call<String> call = RetrofitClient.getClient().create(NoticiasService.class)
+                .send_article_comment(ApiUtils.getBasicAuthWith("article_id", id, "comment_text", text));
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    if (response.body() != null) {
+                        Log.v(TAG, response.body());
+                        JSONObject json = new JSONObject(response.body());
+
+                        if (json.getString(Tags.RESULT).contains(Tags.OK)) {
+                            UserRequests.invokeMethod("onSentCommentSuccess", activity);
+                        } else {
+                            UserRequests.invokeMethodWithString("onSentCommentFailed", activity, json.getString(Tags.MESSAGE));
+                        }
+                    } else {
+                        Log.e(TAG, "response.body is null");
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                ApiUtils.errorResponse(t, activity);
+            }
+        });
+    }
 }

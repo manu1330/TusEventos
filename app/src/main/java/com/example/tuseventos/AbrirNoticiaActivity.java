@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -38,7 +39,8 @@ public class AbrirNoticiaActivity extends Activity {
 
     Articulos articuloMostrar;
     TextView txtTituloNoticia, txtSubtituloNoticia, txtDia, txtHora, txtContenido;
-    Button btFavoritos, btRecordados, btMapa;
+    EditText etEscribirComentario;
+    Button btFavoritos, btRecordados, btMapa, btEnviarComentario;
     ImageView imgNoticiaSeleccionada;
     float lat, lng;
     Toolbar toolbar2;
@@ -58,9 +60,11 @@ public class AbrirNoticiaActivity extends Activity {
         txtDia = findViewById(R.id.txtDia);
         txtHora = findViewById(R.id.txtHora);
         txtContenido = findViewById(R.id.txtContenido);
+        etEscribirComentario = findViewById(R.id.etEscribirComentario);
         btFavoritos = findViewById(R.id.btFavoritos);
         btRecordados = findViewById(R.id.btRecordados);
         btMapa = findViewById(R.id.btMapa);
+        btEnviarComentario = findViewById(R.id.btEnviarComentario);
         imgNoticiaSeleccionada = findViewById(R.id.imgNoticiaSeleccionada);
         toolbar2 = findViewById(R.id.toolbar2);
         rvArticulosRecomendados = findViewById(R.id.rv_recommended_articles);
@@ -134,6 +138,12 @@ public class AbrirNoticiaActivity extends Activity {
             startActivity(intent);
         });
 
+        btEnviarComentario.setOnClickListener(view -> {
+            String textoComentario;
+            textoComentario = etEscribirComentario.getText().toString();
+            NoticiasRequests.send_article_comment(this, articuloMostrar.getId(), textoComentario);
+        });
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvArticulosRecomendados.setLayoutManager(layoutManager);
         rvArticulosRecomendados.setAdapter(new RecommendedArticulosAdapter(this, recommendedArticulos));
@@ -191,6 +201,10 @@ public class AbrirNoticiaActivity extends Activity {
     public void onGetRecommendedArticlesFailed(String message) {
         progressBar.setVisibility(View.GONE);
         Snackbar.make(btRecordados, "Ha ocurrido un error al cargar los artículos recomendados.", Snackbar.LENGTH_LONG).show();
+    }
+
+    public void onSentCommentSuccess() {
+        Snackbar.make(btRecordados, "El comentario se ha enviado correctamente", Snackbar.LENGTH_LONG).show();
     }
 
     private void insertarArticulo(Articulos articulo) {
